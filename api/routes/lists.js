@@ -1,11 +1,9 @@
 const router = require("express").Router();
 const verify = require("../verifyToken");
 const createController = require("../controller/list/create");
-//const updateController = require("../controller/movie/update");
 const deleteController = require("../controller/list/delete");
 const getController = require("../controller/list/get");
-//const getRandomController = require("../controller/movie/getRandom");
-//const getAllController = require("../controller/movie/getAll");
+
 
 
 //CREATE 
