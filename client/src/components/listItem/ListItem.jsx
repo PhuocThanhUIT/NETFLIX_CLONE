@@ -1,11 +1,29 @@
 import { Add, PlayArrow, ThumbDownOutlined, ThumbUpAltOutlined } from "@material-ui/icons";
 import "./listitem.scss";
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
+import axios from 'axios';
 
-export default function ListItem({index}) {
+export default function ListItem({index,item}) {
   const [isHovered,setIsHovered] = useState(false);
-  const trailer =
-    "https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761";
+  const [movie,setMovie] = useState({});
+  useEffect(()=>{
+    const getMovie = async ()=>{
+      try{
+        const res = await axios.get("movies/find/"+ item,{
+          headers:{
+            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTdjMDZjMTY2MWRmZjRkZmVmYTA5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0NTQ1NDM2MiwiZXhwIjoxNjQ1NTQwNzYyfQ.gqceBd32dmB0ofAjhp5f0_bCw7LinHFYYcByvCtTRdk"
+          }
+        });
+        setMovie(res.data);
+        console.log(res.data);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    getMovie();
+  },[item]);
+
+  
   return (
     <div 
         className="listItem"
@@ -14,10 +32,10 @@ export default function ListItem({index}) {
         onMouseLeave={()=>setIsHovered(false)}
     >
         
-        <img src="https://occ-0-1723-92.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABU7D36jL6KiLG1xI8Xg_cZK-hYQj1L8yRxbQuB0rcLCnAk8AhEK5EM83QI71bRHUm0qOYxonD88gaThgDaPu7NuUfRg.jpg?r=4ee" alt="" />
+        <img src={movie.img} alt="" />
         {isHovered && (
         <>
-          <video src={trailer} autoPlay={true} loop={true} muted={true} />
+          <video src={movie.trailer} autoPlay={true} loop={true} muted={true} />
           <div className="itemInfo">
             <div className="icons">
               <PlayArrow className="icon" />
@@ -26,15 +44,14 @@ export default function ListItem({index}) {
               <ThumbDownOutlined className="icon" />
             </div>
             <div className="itemInfoTop">
-              <span>1 hour 14 mins</span>
-              <span className="limit">+16</span>
-              <span>1999</span>
+              <span>{movie.duration}</span>
+              <span className="limit">+{movie.limit}</span>
+              <span>{movie.year}</span>
             </div>
             <div className="desc">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Praesentium hic rem eveniet error possimus, neque ex doloribus.
+              {movie.desc}
             </div>
-            <div className="genre">Action</div>
+            <div className="genre">{movie.genre}</div>
           </div>
         </>
       )}
