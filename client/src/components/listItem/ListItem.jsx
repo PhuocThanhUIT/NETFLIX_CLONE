@@ -2,6 +2,7 @@ import { Add, PlayArrow, ThumbDownOutlined, ThumbUpAltOutlined } from "@material
 import "./listitem.scss";
 import {useState,useEffect} from 'react';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 export default function ListItem({index,item}) {
   const [isHovered,setIsHovered] = useState(false);
@@ -25,17 +26,17 @@ export default function ListItem({index,item}) {
 
   
   return (
+    <Link to="/Watch" state={{ movie }}>
     <div 
         className="listItem"
         style={{left:isHovered && index*225-50+index*2.5}}
         onMouseEnter={()=>setIsHovered(true)}
         onMouseLeave={()=>setIsHovered(false)}
     >
-        
         <img src={movie.img} alt="" />
         {isHovered && (
         <>
-          <video src={movie.trailer} autoPlay={true} loop={true} muted={true} />
+          <video src={movie.trailer} autoPlay={true} loop={true} />
           <div className="itemInfo">
             <div className="icons">
               <PlayArrow className="icon" />
@@ -56,5 +57,6 @@ export default function ListItem({index,item}) {
         </>
       )}
     </div>
+    </Link>
   )
 }
