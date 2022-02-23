@@ -6,9 +6,9 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
-import ProductList from "./pages/productList/ProductList";
-import Product from "./pages/product/Product";
-import NewProduct from "./pages/newProduct/NewProduct";
+import ProductList from "./pages/movieList/MovieList";
+import Movie from "./pages/movie/Movie";
+import NewProduct from "./pages/newProduct/NewMovie";
 import Login from "./pages/login/Login";
 import { AuthContext } from "./context/authContext/AuthContext";
 import { useContext } from "react";
@@ -23,7 +23,6 @@ function App() {
       {user && (
           <>
       <Topbar />
-      <Sidebar/>
       <div className="container">
         <Sidebar />
         
@@ -42,8 +41,8 @@ function App() {
           <Route path="/movies">
             <ProductList />
           </Route>
-          <Route path="/product/:productId">
-            <Product />
+          <Route path="/movie/:movieId">
+            <Movie />
           </Route>
           <Route path="/newproduct">
             <NewProduct />
