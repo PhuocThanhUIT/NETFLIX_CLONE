@@ -1,22 +1,32 @@
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
-import "./App.css";
+import "./app.css";
 import Home from "./pages/home/Home";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
+import Login from "./pages/login/Login";
+import { AuthContext } from "./context/authContext/AuthContext";
+import { useContext } from "react";
+
 
 function App() {
+  const { user } = useContext(AuthContext);
   return (
     <Router>
+      <Switch>
+      <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
+      {user && (
+          <>
       <Topbar />
+      <Sidebar/>
       <div className="container">
         <Sidebar />
-        <Switch>
+        
           <Route exact path="/">
             <Home />
           </Route>
@@ -29,7 +39,7 @@ function App() {
           <Route path="/newUser">
             <NewUser />
           </Route>
-          <Route path="/products">
+          <Route path="/movies">
             <ProductList />
           </Route>
           <Route path="/product/:productId">
@@ -38,8 +48,10 @@ function App() {
           <Route path="/newproduct">
             <NewProduct />
           </Route>
-        </Switch>
+        
       </div>
+      </>)}
+      </Switch>
     </Router>
   );
 }
