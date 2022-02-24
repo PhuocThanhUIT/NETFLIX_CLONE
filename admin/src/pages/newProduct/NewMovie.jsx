@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
 import "./newMovie.css";
+import storage from "../../firebase";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { createMovie } from "../../context/movieContext/apiCalls";
 import { MovieContext } from "../../context/movieContext/MovieContext";
 
@@ -10,16 +12,80 @@ export default function NewMovie() {
   const [imgSm, setImgSm] = useState(null);
   const [trailer, setTrailer] = useState(null);
   const [video, setVideo] = useState(null);
- 
+  const [uploaded, setUploaded] = useState(0);
 
-  //const { dispatch } = useContext(MovieContext);
+  const { dispatch } = useContext(MovieContext);
 
   const handleChange = (e) => {
     const value = e.target.value;
     setMovie({ ...movie, [e.target.name]: value });
   };
 
+  const upload = (items) => {
+    items.forEach((item) => {
+      const fileName = new Date().getTime() + item.label + item.file.name;
+      const storage = getStorage();
+      const storageRef = ref(storage, `/items/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, item.file);
+      //const uploadTask = storage.storage().ref(`/items/${fileName}`).put(item.file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          } 
+        },
+        (error) => {
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+      
+            // ...
+      
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setMovie((prev) => {
+              return { ...prev, [item.label]: url };
+            });
+            setUploaded((prev) => prev + 1);
+          });
+        }
+      );
+    });
+  };
 
+  const handleUpload = (e) => {
+    e.preventDefault();
+    upload([
+      { file: img, label: "img" },
+      { file: imgTitle, label: "imgTitle" },
+      { file: imgSm, label: "imgSm" },
+      { file: trailer, label: "trailer" },
+      { file: video, label: "video" },
+    ]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createMovie(movie, dispatch);
+  };
 
   return (
     <div className="newProduct">
@@ -129,7 +195,15 @@ export default function NewMovie() {
             onChange={(e) => setVideo(e.target.files[0])}
           />
         </div>
-        <button className="addProductButton">Create</button>
+        {uploaded === 5 ? (
+          <button className="addProductButton" onClick={handleSubmit}>
+            Create
+          </button>
+        ) : (
+          <button className="addProductButton" onClick={handleUpload}>
+            Upload
+          </button>
+        )}
       </form>
     </div>
   );
