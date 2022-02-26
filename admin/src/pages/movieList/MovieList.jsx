@@ -8,11 +8,9 @@ import { deleteMovie, getMovies } from "../../context/movieContext/apiCalls";
 
 export default function MovieList() {
   const { movies, dispatch } = useContext(MovieContext);
-
   useEffect(() => {
     getMovies(dispatch);
   }, [dispatch]);
-
   const handleDelete = (id) => {
     deleteMovie(id, dispatch);
   };
