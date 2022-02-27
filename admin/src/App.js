@@ -50,9 +50,11 @@ function App() {
           <Route path="/newmovie">
             <NewMovie />
           </Route>
+          
           <Route path="/lists">
             <ListList />
           </Route>
+          
           <Route path="/list/:listId">
             <List />
           </Route>

@@ -75,7 +75,6 @@ export default function Movie() {
 
   const handleUpload = (e) => {
     e.preventDefault();
-    console.log(arrUploaditem);
     upload(arrUploaditem);
   };
 

@@ -11,6 +11,8 @@ export const getListsFailure = () => ({
   type: "GET_LISTS_FAILURE",
 });
 
+
+
 export const createListStart = () => ({
   type: "CREATE_LIST_START",
 });
@@ -28,9 +30,9 @@ export const updateListStart = () => ({
   type: "UPDATE_LIST_START",
 });
 
-export const updateListSuccess = (movie) => ({
+export const updateListSuccess = (id,list) => ({
   type: "UPDATE_LIST_SUCCESS",
-  payload: movie,
+  payload: list
 });
 
 export const updateListFailure = () => ({

@@ -3,6 +3,7 @@ const verify = require("../verifyToken");
 const createController = require("../controller/list/create");
 const deleteController = require("../controller/list/delete");
 const getController = require("../controller/list/get");
+const updateController = require("../controller/list/update");
 
 
 
@@ -10,7 +11,7 @@ const getController = require("../controller/list/get");
 router.post("/",verify,createController.create);
 
 //UPDATE
-//router.put("/:id",verify,updateController.update);
+router.put("/:id",verify,updateController.update);
 
 //DELETE
 router.delete("/:id",verify,deleteController.delete);

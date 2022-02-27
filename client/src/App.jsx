@@ -1,35 +1,44 @@
-import Home from './pages/home/Home';
-import "./app.scss"
-import Watch from './pages/watch/Watch';
-import Register from './pages/register/Register';
-import Login from './pages/login/Login';
+import "./app.scss";
+import Home from "./pages/home/Home";
+import Register from "./pages/register/Register";
+import Watch from "./pages/watch/Watch";
+import Login from "./pages/login/Login";
 import {
-  BrowserRouter,
-  Routes,
-  Route
-} from 'react-router-dom';
-const App = () => {
-  const user = true;
-  return (
-    <BrowserRouter>
-    <Routes>
-      {user && (
-        <>
-        <Route path="/movies" element={<Home type="movies" />}/>
-      
-        <Route path="/series" element={<Home type="series" />}/>
-  
-        <Route path="/watch" element={<Watch />}/>
-        </>
-      )}
-      <Route path="/"  element={user? <Home />:<Register/>}/>
-    
-      <Route path="/register" element={!user?<Register />:<Home/>}/>
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./authContext/AuthContext";
 
-      <Route path="/login" element={!user?<Login />:<Home/>}/>
-      
-    </Routes>
-  </BrowserRouter>
+const App = () => {
+  const { user } = useContext(AuthContext);
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          {user ? <Home /> : <Redirect to="/register" />}
+        </Route>
+        <Route path="/register">
+          {!user ? <Register /> : <Redirect to="/" />}
+        </Route>
+        <Route path="/login">{!user ? <Login /> : <Redirect to="/" />}</Route>
+        {user && (
+          <>
+            <Route path="/movies">
+              <Home type="movie" />
+            </Route>
+            <Route path="/series">
+              <Home type="series" />
+            </Route>
+            <Route path="/watch">
+              <Watch />
+            </Route>
+          </>
+        )}
+      </Switch>
+    </Router>
   );
 };
 

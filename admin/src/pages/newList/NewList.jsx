@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 
 export default function NewList() {
   const [list, setList] = useState(null);
+  const [arrContent, setArrContent] = useState([]);
   const history = useHistory()
 
   const { dispatch } = useContext(ListContext);
@@ -23,16 +24,26 @@ export default function NewList() {
     setList({ ...list, [e.target.name]: value });
   };
 
+  const handleAddContentSelect = (e) => {
+    let value = Array.from(e.target.selectedOptions, (option) => option.value);
+    if(!arrContent.includes(value)){
+      setArrContent(arrContent.concat(value));
+    }
+    setList({ ...list, [e.target.name]: arrContent });
+  };
   const handleSelect = (e) => {
     let value = Array.from(e.target.selectedOptions, (option) => option.value);
-    setList({ ...list, [e.target.name]: value });
+    setArrContent(arrContent.filter(item => item != value));
+    setList({ ...list, [e.target.name]: arrContent });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(history);
     createList(list, dispatch);
     history.push("/lists")
   };
+  
 
   return (
     <div className="newProduct">
@@ -73,6 +84,23 @@ export default function NewList() {
               multiple
               name="content"
               onChange={handleSelect}
+              style={{ height: "280px" }}
+            >
+              {arrContent.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="formRight">
+          <div className="addProductItem">
+            <label>Movie</label>
+            <select
+              multiple
+              name="content"
+              onChange={handleAddContentSelect}
               style={{ height: "280px" }}
             >
               {movies.map((movie) => (
