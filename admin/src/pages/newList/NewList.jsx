@@ -28,8 +28,10 @@ export default function NewList() {
     let value = Array.from(e.target.selectedOptions, (option) => option.value);
     if(!arrContent.includes(value)){
       setArrContent(arrContent.concat(value));
-    }
+      setList({ ...list, [e.target.name]: arrContent });
+    }else{
     setList({ ...list, [e.target.name]: arrContent });
+    }
   };
   const handleSelect = (e) => {
     let value = Array.from(e.target.selectedOptions, (option) => option.value);

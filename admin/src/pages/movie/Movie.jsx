@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useHistory } from "react-router-dom";
 import { useContext, useState } from "react";
 import storage from "../../firebase";
 import "./movie.css";
@@ -9,12 +9,10 @@ import { MovieContext } from "../../context/movieContext/MovieContext";
 
 export default function Movie() {
   const location = useLocation();
+  const history = useHistory();
   const movies = location.movie;
   const [arrUploaditem, setArrUploaditem] = useState([]);
   const [movie, setMovie] = useState(null);
-  const [img, setImg] = useState(null);
-  const [trailer, setTrailer] = useState(null);
-  const [video, setVideo] = useState(null);
   const [uploaded, setUploaded] = useState(0);
 
   const { dispatch } = useContext(MovieContext);
@@ -81,6 +79,7 @@ export default function Movie() {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateMovie(movies._id,movie, dispatch);
+    history.push("/movies");
   };
   return (
     <div className="product">

@@ -23,6 +23,7 @@ export default function ListItem({ index, item }) {
           },
         });
         setMovie(res.data);
+        
       } catch (err) {
         console.log(err);
       }
@@ -31,7 +32,7 @@ export default function ListItem({ index, item }) {
   }, [item]);
 
   return (
-    <Link to={{ pathname: "/watch", movie: movie }}>
+    <Link to= "/watch" state={{ movie }} >
       <div
         className="listItem"
         style={{ left: isHovered && index * 225 - 50 + index * 2.5 }}
@@ -41,7 +42,7 @@ export default function ListItem({ index, item }) {
         <img src={movie?.imgSm} alt="" />
         {isHovered && (
           <>
-            <video src={movie.trailer} autoPlay={true} loop />
+            <video src={movie.trailer} autoPlay={true} loop muted/>
             <div className="itemInfo">
               <div className="icons">
                 <PlayArrow className="icon" />

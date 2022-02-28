@@ -1,12 +1,18 @@
 import "./navbar.scss";
 import {Search, Notifications, ArrowDropDown} from '@material-ui/icons';
 import {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 const Navbar = () => {
     const [isScrolled,setIsCrolled] = useState(false);
+    const navigate = useNavigate();
     window.onscroll = () => {
         setIsCrolled(window.pageYOffset === 0 ? false:true);
         return () => (window.onscroll =null);
+    };
+    const handleLogout = ()=>{
+        localStorage.clear();
+        navigate("/register");
+        navigate(0);
     };
   return (
     <div className={isScrolled ? "navbar scrolled" : "navbar"}>
@@ -34,7 +40,7 @@ const Navbar = () => {
                     <ArrowDropDown className="icon"/>
                     <div className="options">
                         <span>Settings</span>
-                        <span>Logout</span>
+                        <span onClick={handleLogout}>Logout</span>
                     </div>
                 </div>    
             </div>

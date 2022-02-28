@@ -17,7 +17,7 @@ export default function Register() {
   const handleStart = () => {
     setEmail(emailRef.current.value);
   };
-  const loginClick = () => {
+  const handleLogin = () => {
     navigate("/login");
   };
   const handleFinish = async (e) => {
@@ -38,7 +38,9 @@ export default function Register() {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
             alt=""
           />
-          <button className="loginButton" onClick={loginClick}>Sign In</button>
+          <button className="loginButton" onClick={handleLogin}>
+              Login
+            </button>
         </div>
       </div>
       <div className="container">

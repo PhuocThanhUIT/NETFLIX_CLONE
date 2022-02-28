@@ -1,11 +1,12 @@
 import { ArrowBackOutlined } from "@material-ui/icons"
 import "./watch.scss"
 import {Link, useLocation} from 'react-router-dom'
-import ReactPlayer from 'react-player'
 
 export default function Watch() {
   const location = useLocation();
+  console.log(location);
   const movie = location.state.movie;
+  console.log(movie);
   return (
     <div className="watch">
       <Link to="/">
