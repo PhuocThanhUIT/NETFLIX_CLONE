@@ -1,6 +1,6 @@
 # NETFLIX_CLONE
 Web xem phim mô phỏng giao diện Netflix. Gồm trang xem phim và trang admin upload phim.
-* Công nghệ sử dụng:
+* Framework, thư viện sử dụng:
   * Nodejs: express.js, jsonwebtoken.
   * Reactjs: react-router-dom, react hooks, context api, axios.
   * Data: MongoDB, Firebase
